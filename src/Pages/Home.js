@@ -1,5 +1,6 @@
-import { View, Text, StyleSheet, ActivityIndicator, FlatList } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { View, Text, StyleSheet, ActivityIndicator, FlatList, Animated } from 'react-native'
+import React, { useEffect, useState, useRef } from 'react'
+import { useFocusEffect } from '@react-navigation/native';
 
 import Produto from './Produto';
 
@@ -7,6 +8,7 @@ export default function Home() {
 
   const [ produtos, setProdutos ] = useState([])
   const [ error, setError ] = useState(false);
+  const fade = useRef( new Animated.Value(0)).current;
 
   async function getProdutos() {
     await fetch('https://fakestoreapi.com/products', {
@@ -24,7 +26,20 @@ export default function Home() {
     getProdutos();
   }, [])
 
+  
+  useFocusEffect(
+    React.useCallback(() => {
+        fade.setValue(0);
+        Animated.timing(fade, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: true,
+        }).start();
+    }, [])
+)
+
   return (
+    <Animated.View style={{opacity: fade}}>
     <View style={styles.container}>
       <View style={styles.containerProducts}>
         <Text style={styles.products}>Produtos</Text>
@@ -49,6 +64,7 @@ export default function Home() {
         <ActivityIndicator size="large" color="#00ff00"/>
       }
     </View>
+    </Animated.View>
   )
 }
 
@@ -57,7 +73,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#161616",
     height: "100%",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   text: {
     color: "white"

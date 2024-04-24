@@ -7,6 +7,8 @@ import React, { useContext } from 'react'
 import Home from '../Pages/Home';
 import Busca from '../Pages/Busca';
 import Login from '../Pages/Login';
+import Inserir from '../Pages/Inserir';
+import Perfil from '../Pages/Perfil';
 import { AuthContext } from '../Context/AuthContext';
 
 const Tab = createBottomTabNavigator();
@@ -53,6 +55,26 @@ export default function Rotas()
             ),
           }}
         />
+        <Tab.Screen
+            name="Inserir"
+            component={Inserir}
+            options={{
+                tabBarLabel: () => null,
+                tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="file-excel-box" color={color} size={35} />
+                ),
+            }}
+          />
+            <Tab.Screen
+            name="Perfil"
+            component={Perfil}
+            options={{
+                tabBarLabel: () => null,
+                tabBarIcon: ({ color, size }) => (
+                <MaterialCommunityIcons name="account" color={color} size={35} />
+                ),
+            }}
+          />
         </Tab.Navigator>
     </NavigationContainer>
   )
